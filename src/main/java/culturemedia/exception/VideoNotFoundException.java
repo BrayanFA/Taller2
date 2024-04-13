@@ -1,11 +1,10 @@
 package culturemedia.exception;
 
-public class VideoNoFoundException extends  CultureMediaException{
+import java.text.MessageFormat;
 
-    public VideoNoFoundException(){
+public class VideoNotFoundException extends  CultureMediaException{
 
-    }
-    public  VideoNoFoundException(String title){
-        super(title)
+    public  VideoNotFoundException(String title){
+        super(MessageFormat.format("There is not video with title {0}", title));
     }
 }
