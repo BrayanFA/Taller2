@@ -3,35 +3,41 @@ package culturemedia.service;
 import culturemedia.exception.DurationNotValidException;
 import culturemedia.exception.VideoNotFoundException;
 import culturemedia.model.Video;
+import culturemedia.model.View;
 import culturemedia.repository.VideoRepository;
 import culturemedia.repository.ViewsRepository;
 
 import java.util.List;
 
-public class CultureMediaServiceImpl {
-    private VideoRepository videofacemedia;
-    private ViewsRepository viewfacemedia;
-    public CultureMediaServiceImpl(VideoRepository interfacemedia){
-        this.videofacemedia = interfacemedia;
+public class CultureMediaServiceImpl implements CultureMediaService{
+    private VideoRepository videoRepository;
+    private ViewsRepository viewsRepository;
+    public CultureMediaServiceImpl(VideoRepository videoRepository){
+        this.videoRepository = videoRepository;
     }
-    public CultureMediaServiceImpl(ViewsRepository viewfacemedia){ this.viewfacemedia = viewfacemedia;}
-
-    public List<Video> findTitle(String title) throws VideoNotFoundException {
-        var videos = videofacemedia.find(title);
-        if(videos.isEmpty()){
-            throw new VideoNotFoundException(title);
-        }
-        return videos;
+    public CultureMediaServiceImpl(ViewsRepository viewsRepository){
+        this.viewsRepository = viewsRepository;
     }
-    public List<Video> findDuration(String title, Double duration) throws DurationNotValidException {
-        var videos = videofacemedia.find(Double.valueOf(title), duration);
+    @Override
+    public List<Video> findAllVideos() throws VideoNotFoundException {
+        List<Video> videos = videoRepository.findAll();
         if(videos.isEmpty()){
-            throw new DurationNotValidException(title, duration);
+            throw new VideoNotFoundException();
         }
-        return videos;
+        else{
+            return videos;
+        }
     }
 
-    public List<Video> findAll(){
-        return videofacemedia.findAll();
+    @Override
+    public Video add(Video video) {
+        Video videoAdd = videoRepository.save(video);
+        return videoAdd;
+    }
+
+    @Override
+    public View add(View view) {
+        View viewAdd = viewsRepository.save(view);
+        return viewAdd;
     }
 }
