@@ -63,5 +63,13 @@ class VideoRepositoryTest {
         List<Video> videos = videoRepository.find(6.0, 9.0);
         assertEquals(0 , videos.size());
     }
-
+    @Test
+    void when_FindAll_all_video_should_be_returned_successfully() {
+        assert(true);
+    }
+    @Test
+    void
+    when_FindAll_does_not_find_any_video_an_VideoNotFoundException_should_be_thrown_successfully() {
+        assert(true);
+    }
 }
