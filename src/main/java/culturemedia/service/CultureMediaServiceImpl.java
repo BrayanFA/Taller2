@@ -11,16 +11,36 @@ import java.util.List;
 
 public class CultureMediaServiceImpl implements CultureMediaService{
     private VideoRepository videoRepository;
-    private ViewsRepository viewsRepository;
-    public CultureMediaServiceImpl(VideoRepository videoRepository){
+    private ViewsRepository viewRepository;
+    public CultureMediaServiceImpl(VideoRepository videoRepository, ViewsRepository viewRepository) {
         this.videoRepository = videoRepository;
-    }
-    public CultureMediaServiceImpl(ViewsRepository viewsRepository){
-        this.viewsRepository = viewsRepository;
+        this.viewRepository = viewRepository;
     }
     @Override
     public List<Video> findAllVideos() throws VideoNotFoundException {
         List<Video> videos = videoRepository.findAll();
+        if(videos.isEmpty()){
+            throw new VideoNotFoundException();
+        }
+        else{
+            return videos;
+        }
+    }
+
+    @Override
+    public List<Video> find(String title) throws VideoNotFoundException {
+        List<Video> videos = videoRepository.find(title);
+        if(videos.isEmpty()){
+            throw new VideoNotFoundException();
+        }
+        else{
+            return videos;
+        }
+    }
+
+    @Override
+    public List<Video> find(double fromDuration, double toDuration) throws VideoNotFoundException {
+        List<Video> videos = videoRepository.find(fromDuration, toDuration);
         if(videos.isEmpty()){
             throw new VideoNotFoundException();
         }
@@ -37,7 +57,7 @@ public class CultureMediaServiceImpl implements CultureMediaService{
 
     @Override
     public View add(View view) {
-        View viewAdd = viewsRepository.save(view);
+        View viewAdd = viewRepository.save(view);
         return viewAdd;
     }
 }
