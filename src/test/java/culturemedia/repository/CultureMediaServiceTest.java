@@ -60,7 +60,7 @@ class CultureMediaServiceTest {
     void when_find_forDuration_an_VideoNotFoundException_should_be_thrown_successfully() {
         mockVideoRepositoryFind(null, null, Collections.emptyList());
         assertThrows(VideoNotFoundException.class, () -> {
-            cultureMediaService.find(0.0, 0.5);
+            cultureMediaService.find(0.0, 3.5);
         });
     }
 
@@ -76,7 +76,7 @@ class CultureMediaServiceTest {
     @Test
     void when_find_forDuration_should_be_returned_succesfully() throws VideoNotFoundException{
         mockVideoRepositoryFind(0.0, 5.5, List.of(testVideo1, testVideo2, testVideo3, testVideo4, testVideo6));
-        List<Video> videos = cultureMediaService.find(2.0, 4.8);
+        List<Video> videos = cultureMediaService.find(0.0, 5.5);
         assertEquals(5, videos.size());
     }
 
