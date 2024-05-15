@@ -20,12 +20,12 @@ class CultureMediaServiceTest {
     private CultureMediaService cultureMediaService;
     private VideoRepository videoRepository = Mockito.mock();
 
-    private Video exampleVideo1 = new Video("01", "Title 1", "Hello, this is my video :D", 4.5);
-    private Video exampleVideo2 = new Video("02", "Title 2", "Hello, this is my video :D", 5.5);
-    private Video exampleVideo3 = new Video("03", "Title 3", "Hello, this is my video :D", 4.4);
-    private Video exampleVideo4 = new Video("04", "Title 4", "Hello, this is my video :D", 3.5);
-    private Video exampleVideo5 = new Video("05", "Title 5", "Hello, this is my video :D", 5.7);
-    private Video exampleVideo6 = new Video("06", "Pedro Páramo", "Hello, this is my video :D", 5.1);
+    private Video testVideo1 = new Video("01", "Title 1", "Random Description", 3.2);
+    private Video testVideo2 = new Video("02", "Title 2", "Random Description", 2.8);
+    private Video testVideo3 = new Video("03", "Mark 3", "Random Description", 4.1);
+    private Video testVideo4 = new Video("04", "Mark 4", "Random Description", 2.3);
+    private Video testVideo5 = new Video("05", "Mark 5", "Random Description", 4.4);
+    private Video testVideo6 = new Video("06", "Titanic", "Random Description", 7.7);
 
     @BeforeEach
     void init() {
@@ -43,30 +43,21 @@ class CultureMediaServiceTest {
 
     @Test
     void when_FindAll_all_videos_should_be_returned_successfully() throws VideoNotFoundException {
-
-        mockVideoRepositoryFindAll(
-                List.of(
-                        exampleVideo1,
-                        exampleVideo2,
-                        exampleVideo3,
-                        exampleVideo4,
-                        exampleVideo5,
-                        exampleVideo6)
-        );
+        mockVideoRepositoryFindAll(List.of(testVideo1, testVideo2, testVideo3, testVideo4, testVideo5, testVideo6));
         List<Video> videos = cultureMediaService.findAllVideos();
         assertEquals(6, videos.size());
     }
 
     @Test
-    void when_find_forTitle_an_VideoNotFoundExeption_should_be_thrown_successfully() {
+    void when_find_forTitle_an_VideoNotFoundException_should_be_thrown_successfully() {
         mockVideoRepositoryFind(null, Collections.emptyList());
         assertThrows(VideoNotFoundException.class, () -> {
-            cultureMediaService.find("Presentation");
+            cultureMediaService.find("Candle");
         });
     }
 
     @Test
-    void when_find_forDuration_an_VideoNotFoundExeption_should_be_thrown_successfully() {
+    void when_find_forDuration_an_VideoNotFoundException_should_be_thrown_successfully() {
         mockVideoRepositoryFind(null, null, Collections.emptyList());
         assertThrows(VideoNotFoundException.class, () -> {
             cultureMediaService.find(0.0, 0.5);
@@ -76,22 +67,16 @@ class CultureMediaServiceTest {
     @Test
     void when_find_forTitle_should_be_returned_succesfully() throws VideoNotFoundException{
 
-        mockVideoRepositoryFind("Pedro", List.of(exampleVideo6));
-        List<Video> videos = cultureMediaService.find("Pedro");
+        mockVideoRepositoryFind("Titanic", List.of(testVideo6));
+        List<Video> videos = cultureMediaService.find("Titanic");
         assertEquals(1, videos.size());
-        assertEquals(exampleVideo6, videos.get(0));
+        assertEquals(testVideo6, videos.get(0));
     }
 
     @Test
     void when_find_forDuration_should_be_returned_succesfully() throws VideoNotFoundException{
-
-        mockVideoRepositoryFind(0.0, 5.5, List.of(
-                exampleVideo1,
-                exampleVideo2,
-                exampleVideo3,
-                exampleVideo4,
-                exampleVideo6));
-        List<Video> videos = cultureMediaService.find(0.0, 5.5);
+        mockVideoRepositoryFind(0.0, 5.5, List.of(testVideo1, testVideo2, testVideo3, testVideo4, testVideo6));
+        List<Video> videos = cultureMediaService.find(2.0, 4.8);
         assertEquals(5, videos.size());
     }
 
